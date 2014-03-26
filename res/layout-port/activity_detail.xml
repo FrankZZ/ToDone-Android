@@ -2,25 +2,17 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:baselineAligned="false"
 	android:orientation="horizontal"
 	android:paddingBottom="16dp"
 	android:paddingLeft="16dp"
 	android:paddingRight="16dp"
-	android:paddingTop="16dp" >
+	android:paddingTop="16dp"
+	tools:context=".DetailActivity" >
 
 	<fragment
-		android:id="@+id/movieListFragment"
-		android:layout_width="0dp"
+		android:id="@+id/movieDetail"
+		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_weight="1"
-		class="nl.avans.student.todone.TaskListFragment" />
-
-	<fragment
-		android:id="@+id/movieDetailFragment"
-		android:layout_width="0dp"
-		android:layout_height="match_parent"
-		android:layout_weight="2"
 		class="nl.avans.student.todone.TaskDetailFragment" >
 	</fragment>
 
