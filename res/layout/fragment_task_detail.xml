@@ -21,7 +21,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_below="@+id/titleTextView"
-		android:text="Taakbeschrijving" />
+		android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non porta sem. Vestibulum pretium porta mauris at commodo. Morbi a vulputate dolor, eu iaculis urna. Sed facilisis consequat risus sit amet hendrerit. Vivamus accumsan lacinia enim non faucibus. Aliquam fermentum at magna et ornare. Mauris ut tincidunt orci. Maecenas non eros accumsan, lacinia nisi in, pharetra risus. Ut tincidunt ullamcorper accumsan. Donec eros lacus, mattis ac volutpat id, aliquet non nisl. Vestibulum quis facilisis eros. Integer varius scelerisque turpis quis fringilla." />
 
 	<CheckBox
 		android:id="@+id/checkBox1"
