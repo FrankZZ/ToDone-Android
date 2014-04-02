@@ -48,7 +48,6 @@ public class MainActivity extends SuperActivity implements TaskListFragment.OnIt
 			Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
 			
 			intent.putExtra("taskName", task.getName());
-			//intent.putExtra("movieDetail", task.getDetail());
 			
 			startActivity(intent);
 		}
