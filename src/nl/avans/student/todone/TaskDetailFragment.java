@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
 import nl.avans.student.todone.R;
 
 /**
@@ -34,13 +34,21 @@ public class TaskDetailFragment extends Fragment
 				false);
 	}
 	
-	/*
-	public void setMovie(Task task)
+	
+	public void setTask(Task task)
 	{
-		setMovieNameAndDetail(task.getName(), task.getDetail());
+		this.setTaskName(task.getName());
 	}
 	
-	public void setMovieNameAndDetail(String name, String detail)
+	public void setTaskName(String name)
+	{
+		TextView titleTextView = (TextView)getView().findViewById(R.id.titleTextView);
+		titleTextView.setText(name);
+	}
+	
+
+	
+	/*public void setMovieNameAndDetail(String name, String detail)
 	{
 		
 		TextView detailTextView = (TextView)getView().findViewById(R.id.detailTextView);
@@ -48,6 +56,6 @@ public class TaskDetailFragment extends Fragment
 		
 		titleTextView.setText(name);
 		detailTextView.setText(detail);
-	}
-	*/
+	}*/
+	
 }

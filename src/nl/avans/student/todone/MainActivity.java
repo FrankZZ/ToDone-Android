@@ -2,12 +2,11 @@ package nl.avans.student.todone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
 import nl.avans.student.todone.R;
 
-public class MainActivity extends FragmentActivity implements TaskListFragment.OnItemClickedListener
+public class MainActivity extends SuperActivity implements TaskListFragment.OnItemClickedListener
 {
 
 	@Override 
@@ -16,9 +15,17 @@ public class MainActivity extends FragmentActivity implements TaskListFragment.O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.movieListFragment);
+		Task[] tasks = new Task[5];
 		
-		//fragment.setData(tasks);
+		tasks[0] = new Task("Hond uitlaten");
+		tasks[1] = new Task("Auto wassen");
+		tasks[2] = new Task("Github repository aanmaken");
+		tasks[3] = new Task("Afval buitenzetten");
+		tasks[4] = new Task("Krant rondbrengen");
+		
+		TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.taskListFragment);
+		
+		fragment.setData(tasks);
 	}
 
 	@Override
@@ -32,19 +39,19 @@ public class MainActivity extends FragmentActivity implements TaskListFragment.O
 	@Override
 	public void onItemClicked(Task task)
 	{
-		/*TaskDetailFragment fragment = (TaskDetailFragment)getSupportFragmentManager().findFragmentById(R.id.movieDetailFragment);
+		TaskDetailFragment fragment = (TaskDetailFragment)getSupportFragmentManager().findFragmentById(R.id.taskDetailFragment);
 		
 		if (fragment != null && fragment.isInLayout())
-			fragment.setMovie(task);
+			fragment.setTask(task);
 		else
 		{
 			Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
 			
-			intent.putExtra("movieName", task.getName());
-			intent.putExtra("movieDetail", task.getDetail());
+			intent.putExtra("taskName", task.getName());
+			//intent.putExtra("movieDetail", task.getDetail());
 			
 			startActivity(intent);
-		}*/
+		}
 	}
 
 }

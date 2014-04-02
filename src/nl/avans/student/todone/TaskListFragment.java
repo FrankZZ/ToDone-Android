@@ -64,12 +64,12 @@ public class TaskListFragment extends Fragment
 		mListener = null;
 	}
 	
-	public void setData(final Task[] movies)
+	public void setData(final Task[] tasks)
 	{
 		
-		ListView listView = (ListView)view.findViewById(R.id.movieList);
+		ListView listView = (ListView)view.findViewById(R.id.taskList);
 		
-		TaskListAdapter adapter = new TaskListAdapter(getActivity(), movies);
+		TaskListAdapter adapter = new TaskListAdapter(getActivity(), tasks);
 		
 		listView.setAdapter(adapter);
 		
@@ -78,7 +78,7 @@ public class TaskListFragment extends Fragment
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				mListener.onItemClicked(movies[position]);
+				mListener.onItemClicked(tasks[position]);
 			}
 		});
 	}

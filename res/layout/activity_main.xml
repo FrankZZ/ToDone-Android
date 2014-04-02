@@ -10,14 +10,14 @@
 	android:paddingTop="16dp" >
 
 	<fragment
-		android:id="@+id/movieListFragment"
+		android:id="@+id/taskListFragment"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
 		android:layout_weight="1"
 		class="nl.avans.student.todone.TaskListFragment" />
 
 	<fragment
-		android:id="@+id/movieDetailFragment"
+		android:id="@+id/taskDetailFragment"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
 		android:layout_weight="2"

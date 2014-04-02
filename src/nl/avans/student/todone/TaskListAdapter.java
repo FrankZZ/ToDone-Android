@@ -27,11 +27,11 @@ public class TaskListAdapter extends ArrayAdapter<Task>
 		
 		View rowView = inflater.inflate(android.R.layout.simple_list_item_2,  parent, false);
 		
-		/*TextView text1 = (TextView) rowView.findViewById(android.R.id.text1);
+		TextView text1 = (TextView) rowView.findViewById(android.R.id.text1);
 		TextView text2 = (TextView) rowView.findViewById(android.R.id.text2);
 		
 		text1.setText(values[position].getName());
-		text2.setText(values[position].getGenre());*/
+		//text2.setText(values[position].getGenre());
 		
 		return rowView;
 		

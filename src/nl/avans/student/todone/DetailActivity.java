@@ -6,14 +6,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.CheckBox;
 import nl.avans.student.todone.R;
 
-public class DetailActivity extends FragmentActivity
+public class DetailActivity extends SuperActivity
 {
-	private String movieName;
-	private String movieDetail;
-	
+	private String taskName;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -51,13 +51,12 @@ public class DetailActivity extends FragmentActivity
 	{
 		if (bundle != null)
 		{
-			TaskDetailFragment fragment = (TaskDetailFragment)getSupportFragmentManager().findFragmentById(R.id.movieDetail);
+			TaskDetailFragment fragment = (TaskDetailFragment)getSupportFragmentManager().findFragmentById(R.id.taskDetail);
 			
-			movieName = bundle.getString("movieName");
-			movieDetail = bundle.getString("movieDetail");
+			taskName = bundle.getString("taskName");
 			
-			/*if (fragment != null && fragment.isInLayout())
-				fragment.setMovieNameAndDetail(movieName, movieDetail);*/
+			if (fragment != null && fragment.isInLayout())
+				fragment.setTaskName(taskName);
 			
 		}
 	}
@@ -65,8 +64,7 @@ public class DetailActivity extends FragmentActivity
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
-		outState.putString("movieName", movieName);
-		outState.putString("movieDetail", movieDetail);
+		outState.putString("taskName", taskName);
 	}
 	
 	@Override 
