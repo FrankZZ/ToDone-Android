@@ -1,5 +1,7 @@
 package nl.avans.student.todone;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import nl.avans.student.todone.R;
+import nl.avans.student.todone.models.Task;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -64,7 +66,7 @@ public class TaskListFragment extends Fragment
 		mListener = null;
 	}
 	
-	public void setData(final Task[] tasks)
+	public void setData(final ArrayList<Task> tasks)
 	{
 		
 		ListView listView = (ListView)view.findViewById(R.id.taskList);
@@ -78,7 +80,7 @@ public class TaskListFragment extends Fragment
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				mListener.onItemClicked(tasks[position]);
+				mListener.onItemClicked(tasks.get(position));
 			}
 		});
 	}

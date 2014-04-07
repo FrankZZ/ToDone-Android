@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import nl.avans.student.todone.R;
+import nl.avans.student.todone.models.Task;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that

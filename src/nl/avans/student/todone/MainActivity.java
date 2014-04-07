@@ -1,10 +1,14 @@
 package nl.avans.student.todone;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
+import java.util.ArrayList;
 
-import nl.avans.student.todone.R;
+import nl.avans.student.todone.models.Task;
+import nl.avans.student.todone.models.TaskFactory;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 
 public class MainActivity extends SuperActivity implements TaskListFragment.OnItemClickedListener
 {
@@ -15,17 +19,7 @@ public class MainActivity extends SuperActivity implements TaskListFragment.OnIt
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Task[] tasks = new Task[5];
-		
-		tasks[0] = new Task("Hond uitlaten");
-		tasks[1] = new Task("Auto wassen");
-		tasks[2] = new Task("Github repository aanmaken");
-		tasks[3] = new Task("Afval buitenzetten");
-		tasks[4] = new Task("Krant rondbrengen");
-		
-		TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.taskListFragment);
-		
-		fragment.setData(tasks);
+		new TaskLoader().execute();
 	}
 
 	@Override
@@ -51,6 +45,26 @@ public class MainActivity extends SuperActivity implements TaskListFragment.OnIt
 			
 			startActivity(intent);
 		}
+	}
+	
+	private class TaskLoader extends AsyncTask<Void, Void, ArrayList<Task>>
+	{
+
+		@Override
+		protected ArrayList<Task> doInBackground(Void... arg0)
+		{
+			return TaskFactory.all();
+		}
+		
+		protected void onPostExecute(ArrayList<Task> tasks)
+		{
+			Log.i("TasksResult", "" + tasks.size());
+			
+			TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.taskListFragment);
+			
+			fragment.setData(tasks);
+		}
+		
 	}
 
 }

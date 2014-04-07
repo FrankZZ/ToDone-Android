@@ -1,4 +1,4 @@
-package nl.avans.student.todone;
+package nl.avans.student.todone.models;
 
 public class Task
 {

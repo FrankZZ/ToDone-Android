@@ -15,4 +15,5 @@ public class SuperActivity extends FragmentActivity
 		else
 			((CheckBox)view).setText("Deze taak is nog niet gedaan.");
 	}
+	
 }
