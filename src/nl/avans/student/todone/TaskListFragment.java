@@ -2,18 +2,16 @@ package nl.avans.student.todone;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import nl.avans.student.todone.R;
 import nl.avans.student.todone.models.Task;
-
+import nl.avans.student.todone.models.TaskFactory;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.app.FragmentTransaction;
+import android.app.ListFragment;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
@@ -21,11 +19,10 @@ import nl.avans.student.todone.models.Task;
  * interaction events.
  * 
  */
-public class TaskListFragment extends Fragment
+public class TaskListFragment extends ListFragment
 {
-
-	private OnItemClickedListener mListener;
-	private View view;
+	private boolean dualPane;
+	private int currentId = 1;
 	
 	public TaskListFragment()
 	{
@@ -33,70 +30,91 @@ public class TaskListFragment extends Fragment
 
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
+	public void onActivityCreated(Bundle savedInstanceState)
 	{
-		super.onCreateView(inflater, container, savedInstanceState);
-		view = inflater.inflate(R.layout.fragment_task_list, container, false);
+		super.onActivityCreated(savedInstanceState);
 		
-		// Inflate the layout for this fragment
-		return view;
-	}
+		View detailView = getActivity().findViewById(R.id.taskDetailFragment);
+		dualPane = detailView != null && detailView.getVisibility() == View.VISIBLE;
 
-	@Override
-	public void onAttach(Activity activity)
-	{
-		super.onAttach(activity);
-		try
+		new TasksLoader().execute();
+		
+		if (savedInstanceState != null)
 		{
-			mListener = (OnItemClickedListener) activity;
+			currentId = savedInstanceState.getInt("taskId");
 		}
-		catch (ClassCastException e)
+		
+		if (dualPane)
 		{
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnItemSelectedListener");
+			showDetails(currentId);
 		}
 	}
 
-	@Override
-	public void onDetach()
+	private void showDetails(int id)
 	{
-		super.onDetach();
-		mListener = null;
+		TaskDetailFragment details = (TaskDetailFragment)getFragmentManager().findFragmentById(R.id.taskDetailFragment);
+		
+		currentId = id;
+		
+		if (dualPane)
+		{
+			if (details == null || details.getId() != id)
+				
+			{
+				details = TaskDetailFragment.newInstance(id);
+				
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				ft.replace(R.id.taskDetailFragment, details);
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				
+				ft.commit();
+			} 
+		}
+		else
+		{
+			Intent intent = new Intent();
+			
+			intent.setClass(getActivity(), DetailActivity.class);
+			intent.putExtra("taskId", id);
+			
+			startActivity(intent);
+		}
 	}
 	
 	public void setData(final ArrayList<Task> tasks)
 	{
-		
-		ListView listView = (ListView)view.findViewById(R.id.taskList);
-		
 		TaskListAdapter adapter = new TaskListAdapter(getActivity(), tasks);
-		
-		listView.setAdapter(adapter);
-		
-		listView.setOnItemClickListener(new OnItemClickListener()
+		setListAdapter(adapter);
+	}
+	
+	@Override 
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putInt("taskId", currentId);
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id)
+	{
+		showDetails(v.getId());
+	}
+	
+	private class TasksLoader extends AsyncTask<Void, Void, ArrayList<Task>>
+	{
+
+		@Override
+		protected ArrayList<Task> doInBackground(Void... arg0)
 		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				mListener.onItemClicked(tasks.get(position));
-			}
-		});
+			return TaskFactory.getAll();
+		}
+		
+		protected void onPostExecute(ArrayList<Task> tasks)
+		{
+			setData(tasks);
+		}
+		
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated to
-	 * the activity and potentially other fragments contained in that activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
-	public interface OnItemClickedListener
-	{
-		public void onItemClicked(Task task);
-	}
 
 }

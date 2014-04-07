@@ -4,5 +4,6 @@ public enum RequestMethod
 {
 	GET,
 	POST,
-	PUT
+	PUT,
+	DELETE
 }

@@ -10,5 +10,6 @@
 	<string name="title_activity_remove">RemoveActivity</string>
 	<string name="action_delete">Delete</string>
 	<string name="action_add">Add</string>
+	<string name="loading_text">Laden...</string>
 
 </resources>

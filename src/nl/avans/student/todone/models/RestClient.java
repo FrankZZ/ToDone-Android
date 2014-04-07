@@ -13,8 +13,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -66,62 +68,91 @@ public class RestClient
 	}
 
 	public void Execute(RequestMethod method) throws Exception
-    {
-        switch(method) {
-            case GET:
-            {
-                //add parameters
-                String combinedParams = "";
-                if(!params.isEmpty()){
-                    combinedParams += "?";
-                    for(NameValuePair p : params)
-                    {
-                        String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(),"UTF-8");
-                        if(combinedParams.length() > 1)
-                        {
-                            combinedParams  +=  "&" + paramString;
-                        }
-                        else
-                        {
-                            combinedParams += paramString;
-                        }
-                    }
-                }
+	{
+		switch (method)
+		{
+			case GET:
+			{
+				// add parameters
+				String combinedParams = "";
+				if (!params.isEmpty())
+				{
+					combinedParams += "?";
+					for (NameValuePair p : params)
+					{
+						String paramString = p.getName() + "="
+								+ URLEncoder.encode(p.getValue(), "UTF-8");
 
-                HttpGet request = new HttpGet(url + combinedParams);
+						if (combinedParams.length() > 1)
+						{
+							combinedParams += "&" + paramString;
+						}
+						else
+						{
+							combinedParams += paramString;
+						}
+					}
+				}
 
-                //add headers
-                for(NameValuePair h : headers)
-                {
-                    request.addHeader(h.getName(), h.getValue());
-                }
+				HttpGet request = new HttpGet(url + combinedParams);
 
-                executeRequest(request, url);
-                break;
-            }
-            case POST:
-            {
-                HttpPost request = new HttpPost(url);
+				// add headers
+				for (NameValuePair h : headers)
+				{
+					request.addHeader(h.getName(), h.getValue());
+				}
 
-                //add headers
-                for(NameValuePair h : headers)
-                {
-                    request.addHeader(h.getName(), h.getValue());
-                }
-
-                if(!params.isEmpty()){
-                    request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-                }
-
-                executeRequest(request, url);
-                break;
-            }
-			case PUT:
+				executeRequest(request, url);
 				break;
+			}
+			case POST:
+			{
+				HttpPost request = new HttpPost(url);
+
+				// add headers
+				for (NameValuePair h : headers)
+				{
+					request.addHeader(h.getName(), h.getValue());
+				}
+
+				if (!params.isEmpty())
+				{
+					request.setEntity(new UrlEncodedFormEntity(params,
+							HTTP.UTF_8));
+				}
+
+				executeRequest(request, url);
+				break;
+			}
+			case PUT:
+			{
+				HttpPut request = new HttpPut(url);
+
+				// add headers
+				for (NameValuePair h : headers)
+				{
+					request.addHeader(h.getName(), h.getValue());
+				}
+
+				if (!params.isEmpty())
+				{
+					request.setEntity(new UrlEncodedFormEntity(params,
+							HTTP.UTF_8));
+				}
+
+				executeRequest(request, url);
+				break;
+			}
+			case DELETE:
+			{
+				HttpDelete request = new HttpDelete(url);
+				executeRequest(request, url);
+				break;
+			}
 			default:
 				break;
-        }
-    }
+		}
+	}
 
 	private void executeRequest(HttpUriRequest request, String url)
 	{

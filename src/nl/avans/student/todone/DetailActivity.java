@@ -1,19 +1,17 @@
 package nl.avans.student.todone;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
-import nl.avans.student.todone.R;
 
-public class DetailActivity extends SuperActivity
+public class DetailActivity extends Activity
 {
-	private String taskName;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -25,14 +23,14 @@ public class DetailActivity extends SuperActivity
 			return;
 		}
 		
-		setContentView(R.layout.activity_detail);
-		
-		if (savedInstanceState != null)
-			fillFromBundle(savedInstanceState);
-		else
+		if (savedInstanceState == null)
 		{
-			Bundle extras = getIntent().getExtras();
-			fillFromBundle(extras);
+			TaskDetailFragment details = new TaskDetailFragment();
+			details.setArguments(getIntent().getExtras());
+			
+			FragmentTransaction trans = getFragmentManager().beginTransaction();
+			trans.add(android.R.id.content, (Fragment)details);
+			trans.commit();
 		}
 		
 		// Show the Up button in the action bar.
@@ -45,32 +43,6 @@ public class DetailActivity extends SuperActivity
 	private void setupActionBar()
 	{
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
-
-	private void fillFromBundle(Bundle bundle)
-	{
-		if (bundle != null)
-		{
-			TaskDetailFragment fragment = (TaskDetailFragment)getSupportFragmentManager().findFragmentById(R.id.taskDetail);
-			
-			taskName = bundle.getString("taskName");
-			
-			if (fragment != null && fragment.isInLayout())
-				fragment.setTaskName(taskName);
-			
-		}
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		outState.putString("taskName", taskName);
-	}
-	
-	@Override 
-	protected void onRestoreInstanceState(Bundle savedInstanceState)
-	{
-		fillFromBundle(savedInstanceState);
 	}
 	
 	@Override
@@ -98,6 +70,14 @@ public class DetailActivity extends SuperActivity
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	protected void finishedLoading()
+	{
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+			return;
+		
+		setContentView(R.layout.activity_detail);
 	}
 
 }

@@ -10,7 +10,7 @@
 	tools:context=".DetailActivity" >
 
 	<fragment
-		android:id="@+id/taskDetail"
+		android:id="@+id/taskDetailFragment"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		class="nl.avans.student.todone.TaskDetailFragment" >

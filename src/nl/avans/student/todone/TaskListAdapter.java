@@ -32,9 +32,15 @@ public class TaskListAdapter extends ArrayAdapter<Task>
 		
 		TextView text1 = (TextView) rowView.findViewById(android.R.id.text1);
 		TextView text2 = (TextView) rowView.findViewById(android.R.id.text2);
+
+		Task task = values.get(position);
 		
-		text1.setText(values.get(position).getName());
-		//text2.setText(values[position].getGenre());
+		text1.setText(task.getName());
+		
+		String status = task.getDone() ? "Gedaan" : "Nog niet gedaan";
+		text2.setText(status);
+		
+		rowView.setId(task.getId());
 		
 		return rowView;
 		

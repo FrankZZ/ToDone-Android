@@ -12,7 +12,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:text="Taaknaam"
+		android:text="Laden..."
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<TextView
@@ -20,16 +20,13 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
-		android:layout_below="@+id/titleTextView"
-		android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non porta sem. Vestibulum pretium porta mauris at commodo. Morbi a vulputate dolor, eu iaculis urna. Sed facilisis consequat risus sit amet hendrerit. Vivamus accumsan lacinia enim non faucibus. Aliquam fermentum at magna et ornare. Mauris ut tincidunt orci. Maecenas non eros accumsan, lacinia nisi in, pharetra risus. Ut tincidunt ullamcorper accumsan. Donec eros lacus, mattis ac volutpat id, aliquet non nisl. Vestibulum quis facilisis eros. Integer varius scelerisque turpis quis fringilla." />
+		android:layout_below="@+id/titleTextView" />
 
 	<CheckBox
 		android:id="@+id/checkBox1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
-		android:layout_below="@+id/detailTextView"
-		android:onClick="onCheckboxClicked"
-		android:text="Deze taak is nog niet gedaan." />
+		android:layout_below="@+id/detailTextView" />
 
 </RelativeLayout>
