@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -8,11 +8,22 @@
 	android:paddingLeft="16dp"
 	android:paddingRight="16dp"
 	android:paddingTop="16dp" >
-
+    
+	
 	<fragment
 		android:id="@+id/taskListFragment"
+		android:layout_below="@+id/textView1"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		class="nl.avans.student.todone.TaskListFragment" />
 
-</LinearLayout>
+	<TextView
+	    android:id="@+id/textGreeting"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"
+	    android:text="@string/main_greeting"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+</RelativeLayout>

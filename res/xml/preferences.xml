@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:dialogTitle="Uw naam"
+        android:key="pref_naam"
+        android:summary="Vul uw naam in"
+        android:title="Naam invullen" />
+
+</PreferenceScreen>

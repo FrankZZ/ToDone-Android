@@ -43,7 +43,7 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 
 		registerForContextMenu(getListView());
 		
-		new TasksLoader().execute();
+		this.refreshData();
 		
 		if (savedInstanceState != null)
 		{
@@ -56,6 +56,12 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 		}
 	}
 
+	public void refreshData()
+	{
+		
+		new TasksLoader().execute();
+	}
+	
 	private void showDetails(int id)
 	{
 		TaskDetailFragment details = (TaskDetailFragment)getFragmentManager().findFragmentById(R.id.taskDetailFragment);

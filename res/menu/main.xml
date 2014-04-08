@@ -12,8 +12,8 @@
 		android:showAsAction="always"
 		android:title="@string/action_settings"/>
 	<item
-		android:id="@+id/action_delete"
-		android:icon="@+android:drawable/ic_menu_delete"
+		android:id="@+id/action_refresh"
+		android:icon="@+drawable/ic_action_refresh"
 		android:showAsAction="always"
 		android:title="@string/action_delete"/>
 

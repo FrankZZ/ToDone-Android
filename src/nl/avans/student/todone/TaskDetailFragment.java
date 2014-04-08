@@ -74,15 +74,12 @@ public class TaskDetailFragment extends Fragment
 			TextView detailTextView = (TextView)view.findViewById(R.id.detailTextView);
 			detailTextView.setText(task.getDescription());
 			
-			CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBox1);
-			
-			checkBox.setOnCheckedChangeListener(null);
+			TextView doneText = (TextView)view.findViewById(R.id.doneTextView);
 			
 			String status = task.getDone() ? "Gedaan" : "Nog niet gedaan";
-			checkBox.setText(status);
-			checkBox.setChecked(task.getDone());
+			doneText.setText(status);
 			
-			checkBox.setOnCheckedChangeListener(checkBoxChangeListener);
+			//checkBox.setOnCheckedChangeListener(checkBoxChangeListener);
 		}
 	}
 	
@@ -104,7 +101,7 @@ public class TaskDetailFragment extends Fragment
 		
 	}
 
-	public OnCheckedChangeListener checkBoxChangeListener = new OnCheckedChangeListener()
+	/*public OnCheckedChangeListener checkBoxChangeListener = new OnCheckedChangeListener()
 	{
 
 		@Override
@@ -117,6 +114,6 @@ public class TaskDetailFragment extends Fragment
 			checkBox.setText(status);
 		}
 		
-	};
+	};*/
 	
 }

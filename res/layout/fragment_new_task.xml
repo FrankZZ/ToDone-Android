@@ -29,12 +29,12 @@
         android:id="@+id/taskDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
         android:layout_below="@+id/taskName"
         android:ems="10"
         android:fontFamily="sans-serif"
         android:hint="@string/add_task_desc"
-        android:inputType="textPassword" >
-
+        android:inputType="textMultiLine" >
         
     </EditText>
 
