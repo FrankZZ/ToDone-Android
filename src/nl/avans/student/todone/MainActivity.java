@@ -13,7 +13,8 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity
 {
-
+	private OnSharedPreferenceChangeListener prefsListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -28,22 +29,50 @@ public class MainActivity extends FragmentActivity
 		TextView greeting = (TextView) findViewById(R.id.textGreeting);
 		greeting.setText("Hallo, " + namePref);
 		
-		OnSharedPreferenceChangeListener listener = new OnSharedPreferenceChangeListener()
+		if (prefsListener == null)
 		{
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-	
-		        if (key.equals(SettingsActivity.PREF_NAME_KEY)) 
-		        {
-		        	String namePref = sharedPreferences.getString(SettingsActivity.PREF_NAME_KEY, "");
-
-		    		TextView greeting = (TextView) findViewById(R.id.textGreeting);
-		    		greeting.setText("Hallo, " + namePref);
-		        }
-			}
-	    };
-	    sharedPref.registerOnSharedPreferenceChangeListener(listener);
+			prefsListener = new OnSharedPreferenceChangeListener()
+			{
+				public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		
+			        if (key.equals(SettingsActivity.PREF_NAME_KEY)) 
+			        {
+			        	MainActivity.this.syncNamePref();
+			        }
+				}
+		    };
+		}
+	    sharedPref.registerOnSharedPreferenceChangeListener(prefsListener);
 	}
 
+	private void syncNamePref()
+	{
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	    
+	    String namePref = sharedPref.getString(SettingsActivity.PREF_NAME_KEY, "");
+		
+		TextView greeting = (TextView) findViewById(R.id.textGreeting);
+		greeting.setText("Hallo, " + namePref);
+	}
+	
+	@Override
+	public void onResume() 
+	{
+	    super.onResume();
+	    this.syncNamePref();
+	    
+	    PreferenceManager.getDefaultSharedPreferences(this)
+	            .registerOnSharedPreferenceChangeListener(this.prefsListener);
+	}
+
+	@Override
+	public void onPause() 
+	{
+	    super.onPause();
+	    PreferenceManager.getDefaultSharedPreferences(this)
+	            .unregisterOnSharedPreferenceChangeListener(this.prefsListener);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

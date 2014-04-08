@@ -9,14 +9,6 @@
 	android:paddingRight="16dp"
 	android:paddingTop="16dp" >
     
-	
-	<fragment
-		android:id="@+id/taskListFragment"
-		android:layout_below="@+id/textView1"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		class="nl.avans.student.todone.TaskListFragment" />
-
 	<TextView
 	    android:id="@+id/textGreeting"
 	    android:layout_width="wrap_content"
@@ -25,5 +17,14 @@
 	    android:layout_centerHorizontal="true"
 	    android:text="@string/main_greeting"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	<fragment
+		android:id="@+id/taskListFragment"
+		android:layout_below="@+id/textGreeting"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		class="nl.avans.student.todone.TaskListFragment" />
+
+	
 	
 </RelativeLayout>
