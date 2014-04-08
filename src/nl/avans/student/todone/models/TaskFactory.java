@@ -50,6 +50,8 @@ public class TaskFactory
 			Log.d("content", rest.getResponse());
 			JSONObject taskObject = (JSONObject) new JSONTokener(rest.getResponse()).nextValue();
 			task = new Task(taskObject);
+			
+			Log.d("REST", "Got task " + task.getId());
 		}
 		catch (Exception e)
 		{
@@ -59,7 +61,7 @@ public class TaskFactory
 		return task;
 	}
 	
-	public static void saveOne(int id, Task task)
+	public static void saveOne(Task task)
 	{
 		new AsyncTask<Task, Void, Void>()
 		{
@@ -74,6 +76,16 @@ public class TaskFactory
 				rest.AddParam("taskDesc", task.getDescription());
 				rest.AddParam("taskStatus", task.getDone().toString());
 				
+				try
+				{
+					rest.Execute(RequestMethod.PUT);
+					Log.d("REST", "Updated task " + task.getId());
+				}
+				catch (Exception e)
+				{
+					Log.e("Ex", e.toString());
+				}
+				
 				return null;
 			}
 		}.execute(task);
@@ -81,6 +93,50 @@ public class TaskFactory
 	
 	public static void createOne(Task task)
 	{
+		new AsyncTask<Task, Void, Void>()
+		{
+
+			@Override
+			protected Void doInBackground(Task... arg0)
+			{
+				Task task = arg0[0];
+				
+				RestClient rest = new RestClient(Configuration.BASE_URL + "tasks");
+				rest.AddParam("taskName", task.getName());
+				rest.AddParam("taskDesc", task.getDescription());
+				rest.AddParam("taskStatus", task.getDone().toString());
+				
+				try
+				{
+					rest.Execute(RequestMethod.POST);
+					JSONObject taskObject = (JSONObject) new JSONTokener(rest.getResponse()).nextValue();
+					
+					task.setId(taskObject.getInt("ID"));
+					
+					Log.d("REST", "Created task " + task.getId());
+				}
+				catch (Exception e)
+				{
+					Log.e("Ex", e.toString());
+				}
+				
+				return null;
+			}
+		}.execute(task);
+	}
+	
+	public static void deleteOne(Task task)
+	{
+		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
 		
+		try
+		{
+			rest.Execute(RequestMethod.DELETE);
+			Log.d("REST", "Deleted task " + task.getId());
+		}
+		catch (Exception e)
+		{
+			Log.e("Ex", e.toString());
+		}
 	}
 }

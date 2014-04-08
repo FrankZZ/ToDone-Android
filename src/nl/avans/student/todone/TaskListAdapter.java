@@ -45,5 +45,17 @@ public class TaskListAdapter extends ArrayAdapter<Task>
 		return rowView;
 		
 	}
+	
+	public void removeByTaskId(int id)
+	{
+		for (int i = 0; i < this.values.size(); i++)
+		{
+			if (this.values.get(i).getId() == id)
+			{
+				this.values.remove(i);
+				this.notifyDataSetInvalidated();
+			}
+		}
+	}
 
 }

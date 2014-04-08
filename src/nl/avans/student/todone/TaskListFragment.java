@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import nl.avans.student.todone.models.Task;
 import nl.avans.student.todone.models.TaskFactory;
+import android.app.FragmentTransaction;
+import android.app.LauncherActivity.ListItem;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -37,6 +41,8 @@ public class TaskListFragment extends ListFragment
 		View detailView = getActivity().findViewById(R.id.taskDetailFragment);
 		dualPane = detailView != null && detailView.getVisibility() == View.VISIBLE;
 
+		registerForContextMenu(getListView());
+		
 		new TasksLoader().execute();
 		
 		if (savedInstanceState != null)
@@ -85,6 +91,70 @@ public class TaskListFragment extends ListFragment
 	{
 		TaskListAdapter adapter = new TaskListAdapter(getActivity(), tasks);
 		setListAdapter(adapter);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		TaskListAdapter adapter = (TaskListAdapter) getListAdapter();
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+		Task task = adapter.getItem(info.position);
+		
+		menu.setHeaderTitle("Task opties - " + task.getName());
+		
+		menu.add(0, 0, 0, "Open item");
+		menu.add(0, 0, 0, "Delete item");
+		menu.add(0, 0, 0, "Toggle gedaan");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) 
+	{
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
+		int rowId = (int) info.id;
+		TaskListAdapter adapter = (TaskListAdapter) getListAdapter();
+		Task task = adapter.getItem(rowId);
+		
+		if (item.getTitle() == "Open item")
+		{
+			showDetails(task.getId());
+		}
+		else if (item.getTitle() == "Delete item")
+		{
+			adapter.remove(task);
+			
+			new AsyncTask<Task, Void, Void>()
+			{
+
+				@Override
+				protected Void doInBackground(Task... arg0)
+				{
+					TaskFactory.deleteOne(arg0[0]);
+					return null;
+				}
+			}.execute(task);
+		}
+		else if (item.getTitle() == "Toggle gedaan")
+		{
+			task.setDone(!task.getDone());
+			adapter.notifyDataSetChanged();
+			
+			new AsyncTask<Task, Void, Void>()
+			{
+
+				@Override
+				protected Void doInBackground(Task... arg0)
+				{
+					TaskFactory.saveOne(arg0[0]);
+					return null;
+				}
+			}.execute(task);
+		}
+		
+		return super.onContextItemSelected(item);
 	}
 	
 	@Override 
