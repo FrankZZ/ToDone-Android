@@ -11,5 +11,8 @@
 	<string name="action_delete">Delete</string>
 	<string name="action_add">Add</string>
 	<string name="loading_text">Laden...</string>
+	<string name="add_task_name">Taaknaam...</string>
+	<string name="add_task_desc">Taakbeschrijving...</string>
+	<string name="add_task_title">Taak toevoegen</string>
 
 </resources>

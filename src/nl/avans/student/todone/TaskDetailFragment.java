@@ -23,7 +23,6 @@ import android.widget.TextView;
  */
 public class TaskDetailFragment extends Fragment
 {
-	private Task mTask;
 	
 	public static TaskDetailFragment newInstance(int taskId)
 	{
@@ -65,8 +64,6 @@ public class TaskDetailFragment extends Fragment
 	
 	public void setTask(Task task)
 	{
-		
-		this.mTask = task;
 		View view = getView();
 		if (view != null)
 		{

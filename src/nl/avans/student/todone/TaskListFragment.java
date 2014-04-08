@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import nl.avans.student.todone.models.Task;
 import nl.avans.student.todone.models.TaskFactory;
 import android.app.FragmentTransaction;
-import android.app.LauncherActivity.ListItem;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,10 +22,11 @@ import android.widget.ListView;
  * interaction events.
  * 
  */
-public class TaskListFragment extends ListFragment
+public class TaskListFragment extends ListFragment implements OnSubmittedListener
 {
 	private boolean dualPane;
 	private int currentId = 1;
+	
 	
 	public TaskListFragment()
 	{
@@ -184,6 +184,13 @@ public class TaskListFragment extends ListFragment
 			setData(tasks);
 		}
 		
+	}
+
+	@Override
+	public void onSubmitted(Task task)
+	{
+		TaskListAdapter adapter = (TaskListAdapter)getListAdapter();
+		adapter.add(task);
 	}
 
 

@@ -63,66 +63,47 @@ public class TaskFactory
 	
 	public static void saveOne(Task task)
 	{
-		new AsyncTask<Task, Void, Void>()
+				
+		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
+		rest.AddParam("taskName", task.getName());
+		rest.AddParam("taskDesc", task.getDescription());
+		rest.AddParam("taskStatus", task.getDone().toString());
+		
+		try
 		{
+			rest.Execute(RequestMethod.PUT);
+			Log.d("REST", "Updated task " + task.getId());
+		}
+		catch (Exception e)
+		{
+			Log.e("Ex", e.toString());
+		}
+		
 
-			@Override
-			protected Void doInBackground(Task... arg0)
-			{
-				Task task = arg0[0];
-				
-				RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
-				rest.AddParam("taskName", task.getName());
-				rest.AddParam("taskDesc", task.getDescription());
-				rest.AddParam("taskStatus", task.getDone().toString());
-				
-				try
-				{
-					rest.Execute(RequestMethod.PUT);
-					Log.d("REST", "Updated task " + task.getId());
-				}
-				catch (Exception e)
-				{
-					Log.e("Ex", e.toString());
-				}
-				
-				return null;
-			}
-		}.execute(task);
 	}
 	
-	public static void createOne(Task task)
+	public static Task createOne(Task task)
 	{
-		new AsyncTask<Task, Void, Void>()
+		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks");
+		rest.AddParam("taskName", task.getName());
+		rest.AddParam("taskDesc", task.getDescription());
+		rest.AddParam("taskStatus", task.getDone().toString());
+		
+		try
 		{
-
-			@Override
-			protected Void doInBackground(Task... arg0)
-			{
-				Task task = arg0[0];
-				
-				RestClient rest = new RestClient(Configuration.BASE_URL + "tasks");
-				rest.AddParam("taskName", task.getName());
-				rest.AddParam("taskDesc", task.getDescription());
-				rest.AddParam("taskStatus", task.getDone().toString());
-				
-				try
-				{
-					rest.Execute(RequestMethod.POST);
-					JSONObject taskObject = (JSONObject) new JSONTokener(rest.getResponse()).nextValue();
-					
-					task.setId(taskObject.getInt("ID"));
-					
-					Log.d("REST", "Created task " + task.getId());
-				}
-				catch (Exception e)
-				{
-					Log.e("Ex", e.toString());
-				}
-				
-				return null;
-			}
-		}.execute(task);
+			rest.Execute(RequestMethod.POST);
+			JSONObject taskObject = (JSONObject) new JSONTokener(rest.getResponse()).nextValue();
+			
+			task.setId(taskObject.getInt("ID"));
+			
+			Log.d("REST", "Created task " + task.getId());
+		}
+		catch (Exception e)
+		{
+			Log.e("Ex", e.toString());
+		}
+		
+		return task;
 	}
 	
 	public static void deleteOne(Task task)

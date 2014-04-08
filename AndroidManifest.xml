@@ -30,7 +30,7 @@
 			android:parentActivityName="nl.avans.student.todone.MainActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.example.fragmentsweek3.MainActivity" />
+				android:value="nl.avans.student.todone.MainActivity" />
 		</activity>
 	</application>
 
