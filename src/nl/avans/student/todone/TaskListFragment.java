@@ -139,6 +139,13 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 				protected Void doInBackground(Task... arg0)
 				{
 					TaskFactory.deleteOne(arg0[0]);
+					if (dualPane && currentId == arg0[0].getId())
+					{
+						FragmentTransaction ft = getFragmentManager().beginTransaction();
+						ft.remove(getFragmentManager().findFragmentById(R.id.taskDetailFragment));
+						ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+						ft.commit();
+					}
 					return null;
 				}
 			}.execute(task);
@@ -155,6 +162,10 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 				protected Void doInBackground(Task... arg0)
 				{
 					TaskFactory.saveOne(arg0[0]);
+					
+					if (dualPane && currentId == arg0[0].getId())
+						TaskListFragment.this.showDetails(arg0[0].getId());
+					
 					return null;
 				}
 			}.execute(task);
