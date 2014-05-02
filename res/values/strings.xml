@@ -16,5 +16,6 @@
     <string name="add_task_title">Taak toevoegen</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="main_greeting">"Hallo, "</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>

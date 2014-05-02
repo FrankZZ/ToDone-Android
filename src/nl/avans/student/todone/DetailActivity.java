@@ -1,7 +1,11 @@
 package nl.avans.student.todone;
 
+import nl.avans.student.todone.models.Task;
+import nl.avans.student.todone.models.TaskFactory;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -67,6 +71,31 @@ public class DetailActivity extends Activity
 				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 				//
 				NavUtils.navigateUpFromSameTask(this);
+				return true;
+			case R.id.action_settings:
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+
+				return true;
+			case R.id.action_delete:
+				
+				Bundle bundle = getIntent().getExtras();
+				int taskId = bundle.getInt("taskId");
+				
+				new AsyncTask<Integer, Void, Void>()
+				{
+
+					@Override
+					protected Void doInBackground(Integer... arg0)
+					{
+						TaskFactory.deleteOne(arg0[0]);
+						
+						return null;
+					}
+				}.execute(taskId);
+				
+				finish();
+				
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

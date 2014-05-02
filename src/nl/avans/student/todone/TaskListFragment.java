@@ -22,10 +22,11 @@ import android.widget.ListView;
  * interaction events.
  * 
  */
-public class TaskListFragment extends ListFragment implements OnSubmittedListener
+public class TaskListFragment extends ListFragment implements OnSubmittedListener, OnUpdatedTaskListener
 {
 	private boolean dualPane;
 	private int currentId = 1;
+	private int currentRowId = 0;
 	
 	
 	public TaskListFragment()
@@ -49,11 +50,6 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 		{
 			currentId = savedInstanceState.getInt("taskId");
 		}
-		
-		if (dualPane)
-		{
-			showDetails(currentId);
-		}
 	}
 
 	public void refreshData()
@@ -65,7 +61,7 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 	private void showDetails(int id)
 	{
 		TaskDetailFragment details = (TaskDetailFragment)getFragmentManager().findFragmentById(R.id.taskDetailFragment);
-		
+		if (details != null) details.Attach(this);
 		currentId = id;
 		
 		if (dualPane)
@@ -74,6 +70,8 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 				
 			{
 				details = TaskDetailFragment.newInstance(id);
+				
+				details.Attach(TaskListFragment.this);
 				
 				FragmentTransaction ft = getFragmentManager().beginTransaction();
 				ft.replace(R.id.taskDetailFragment, details);
@@ -155,20 +153,12 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 			task.setDone(!task.getDone());
 			adapter.notifyDataSetChanged();
 			
-			new AsyncTask<Task, Void, Void>()
-			{
-
-				@Override
-				protected Void doInBackground(Task... arg0)
-				{
-					TaskFactory.saveOne(arg0[0]);
-					
-					if (dualPane && currentId == arg0[0].getId())
-						TaskListFragment.this.showDetails(arg0[0].getId());
-					
-					return null;
-				}
-			}.execute(task);
+	
+			TaskFactory.saveOne(task);
+			
+			if (dualPane && currentId == task.getId())
+				TaskListFragment.this.showDetails(task.getId());
+			
 		}
 		
 		return super.onContextItemSelected(item);
@@ -184,6 +174,7 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
+		currentRowId = position;
 		showDetails(v.getId());
 	}
 	
@@ -203,11 +194,24 @@ public class TaskListFragment extends ListFragment implements OnSubmittedListene
 		
 	}
 
+	public void onResume()
+	{
+		super.onResume();
+		if (dualPane == false)
+			refreshData();
+	}
+	
 	@Override
 	public void onSubmitted(Task task)
 	{
 		TaskListAdapter adapter = (TaskListAdapter)getListAdapter();
 		adapter.add(task);
+	}
+	
+	public void onUpdatedTask(Task task)
+	{
+		TaskListAdapter adapter = (TaskListAdapter) getListAdapter();
+		adapter.updateTask(task,  currentRowId);
 	}
 
 

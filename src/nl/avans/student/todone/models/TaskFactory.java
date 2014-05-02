@@ -63,21 +63,30 @@ public class TaskFactory
 	
 	public static void saveOne(Task task)
 	{
+		new AsyncTask<Task, Void, Void>()
+		{
+
+			@Override
+			protected Void doInBackground(Task... arg0)
+			{	
+				Task task = arg0[0];
+				RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
+				rest.AddParam("taskName", task.getName());
+				rest.AddParam("taskDesc", task.getDescription());
+				rest.AddParam("taskStatus", task.getDone().toString());
 				
-		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
-		rest.AddParam("taskName", task.getName());
-		rest.AddParam("taskDesc", task.getDescription());
-		rest.AddParam("taskStatus", task.getDone().toString());
-		
-		try
-		{
-			rest.Execute(RequestMethod.PUT);
-			Log.d("REST", "Updated task " + task.getId());
-		}
-		catch (Exception e)
-		{
-			Log.e("Ex", e.toString());
-		}
+				try
+				{
+					rest.Execute(RequestMethod.PUT);
+					Log.d("REST", "Updated task " + task.getId());
+				}
+				catch (Exception e)
+				{
+					Log.e("Ex", e.toString());
+				}
+				return null;
+			}
+		}.execute(task);
 		
 
 	}
@@ -108,12 +117,17 @@ public class TaskFactory
 	
 	public static void deleteOne(Task task)
 	{
-		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + task.getId());
+		deleteOne(task.getId());
+	}
+	
+	public static void deleteOne(int taskId)
+	{
+		RestClient rest = new RestClient(Configuration.BASE_URL + "tasks/" + taskId);
 		
 		try
 		{
 			rest.Execute(RequestMethod.DELETE);
-			Log.d("REST", "Deleted task " + task.getId());
+			Log.d("REST", "Deleted task " + taskId);
 		}
 		catch (Exception e)
 		{

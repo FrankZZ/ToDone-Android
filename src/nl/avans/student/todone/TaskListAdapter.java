@@ -46,6 +46,12 @@ public class TaskListAdapter extends ArrayAdapter<Task>
 		
 	}
 	
+	public void updateTask(Task task, int id)
+	{
+		values.set(id, task);
+		this.notifyDataSetChanged();
+	}
+	
 	public void removeByTaskId(int id)
 	{
 		for (int i = 0; i < this.values.size(); i++)

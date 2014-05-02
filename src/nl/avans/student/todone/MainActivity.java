@@ -98,12 +98,14 @@ public class MainActivity extends FragmentActivity
 			case R.id.action_add:
 			{
 				NewTaskFragment taskFragment = new NewTaskFragment();
-				taskFragment.show(getFragmentManager(), null);
+				
 
 				TaskListFragment fragment = (TaskListFragment) getFragmentManager()
 						.findFragmentById(R.id.taskListFragment);
 
 				taskFragment.Attach(fragment);
+				
+				taskFragment.show(getFragmentManager(), null);
 
 				return true;
 			}

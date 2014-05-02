@@ -2,7 +2,8 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".TaskDetailFragment" >
+	tools:context=".TaskDetailFragment" 
+	android:layout_margin="20dp">
 
 	<!-- TODO: Update blank fragment layout -->
 
@@ -22,11 +23,12 @@
 		android:layout_alignParentLeft="true"
 		android:layout_below="@+id/titleTextView" />
 
-	<TextView
-		android:id="@+id/doneTextView"
+	<CheckBox
+		android:id="@+id/doneCheckBox"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
+		android:layout_marginTop="50dp"
 		android:layout_below="@+id/detailTextView" />
 
 </RelativeLayout>

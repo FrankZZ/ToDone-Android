@@ -23,6 +23,8 @@ import android.widget.TextView;
  */
 public class TaskDetailFragment extends Fragment
 {
+	private OnUpdatedTaskListener listener;
+	private Task task;
 	
 	public static TaskDetailFragment newInstance(int taskId)
 	{
@@ -35,9 +37,19 @@ public class TaskDetailFragment extends Fragment
 		return f;
 	}
 	
+	public void Attach(OnUpdatedTaskListener listener)
+	{
+		this.listener = listener;
+	}
+	
+	public void Detach()
+	{
+		this.listener = null;
+	}
+	
 	public int getTaskId()
 	{
-		return getArguments().getInt("taskId", 0);
+		return getArguments().getInt("taskId", -1);
 	}
 	
 	@Override
@@ -58,13 +70,31 @@ public class TaskDetailFragment extends Fragment
 		
 		if (getView() != null)
 		{
-			new TaskLoader().execute(this.getTaskId());
+			int taskId = this.getTaskId();
+			
+			if (taskId != -1)
+				new TaskLoader().execute(taskId);
 		}
+	}
+	
+	public void setChooseItemText()
+	{
+		View view = getView();
+		
+		if (view != null)
+		{
+			TextView titleTextView = (TextView)view.findViewById(R.id.titleTextView);
+			titleTextView.setText("Kies een item");
+		}
+		
 	}
 	
 	public void setTask(Task task)
 	{
 		View view = getView();
+		
+		this.task = task;
+		
 		if (view != null)
 		{
 			
@@ -74,16 +104,17 @@ public class TaskDetailFragment extends Fragment
 			TextView detailTextView = (TextView)view.findViewById(R.id.detailTextView);
 			detailTextView.setText(task.getDescription());
 			
-			TextView doneText = (TextView)view.findViewById(R.id.doneTextView);
+			CheckBox checkBox = (CheckBox)view.findViewById(R.id.doneCheckBox);
 			
 			String status = task.getDone() ? "Gedaan" : "Nog niet gedaan";
-			doneText.setText(status);
+			checkBox.setChecked(task.getDone());
+			checkBox.setText(status);
 			
-			//checkBox.setOnCheckedChangeListener(checkBoxChangeListener);
+			checkBox.setOnCheckedChangeListener(checkBoxChangeListener);
 		}
 	}
 	
-	protected class TaskLoader extends AsyncTask<Integer, Void, Task>
+	protected class TaskLoader extends AsyncTask<Integer, Task, Task>
 	{
 
 		@Override
@@ -94,6 +125,8 @@ public class TaskDetailFragment extends Fragment
 		
 		protected void onPostExecute(Task task)
 		{
+			if (task == null)
+				return;
 			Log.i("TasksResult", "Loaded task " + task.getId() + " from API.");
 			
 			setTask(task);
@@ -101,7 +134,7 @@ public class TaskDetailFragment extends Fragment
 		
 	}
 
-	/*public OnCheckedChangeListener checkBoxChangeListener = new OnCheckedChangeListener()
+	public OnCheckedChangeListener checkBoxChangeListener = new OnCheckedChangeListener()
 	{
 
 		@Override
@@ -110,10 +143,17 @@ public class TaskDetailFragment extends Fragment
 		{
 			CheckBox checkBox = (CheckBox)buttonView;
 			
-			String status = checkBox.isChecked() ? "Gedaan" : "Nog niet gedaan";
+			String status = isChecked ? "Gedaan" : "Nog niet gedaan";
 			checkBox.setText(status);
+			
+			task.setDone(isChecked);
+			Log.i("TasksResult", "Set task done status to " + isChecked + " for task " + task.getId() + ", saving to API...");
+			TaskFactory.saveOne(task);
+			
+			if (listener != null)
+				listener.onUpdatedTask(task);
 		}
 		
-	};*/
+	};
 	
 }

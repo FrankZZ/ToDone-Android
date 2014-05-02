@@ -59,6 +59,10 @@ public class NewTaskFragment extends DialogFragment
 								task.setDescription(taskDesc);
 								task.setDone(false);
 								
+								NewTaskFragment.this.listener.onSubmitted(task);
+								
+								NewTaskFragment.this.Detach();
+								
 								new AsyncTask<Task, Void, Task>()
 								{
 
@@ -66,13 +70,6 @@ public class NewTaskFragment extends DialogFragment
 									protected Task doInBackground(Task... arg0)
 									{
 										return TaskFactory.createOne(arg0[0]);
-									}
-									
-									@Override
-									protected void onPostExecute(Task arg0)
-									{
-										NewTaskFragment.this.listener.onSubmitted(arg0);
-										NewTaskFragment.this.Detach();
 									}
 								}.execute(task);
 
